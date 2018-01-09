@@ -20,10 +20,10 @@ void loop()
   switch(c)
   {
     case '1':
-    Escribir();
+      Escribir();
     break;
     case '2':
-    Leer();
+      Leer();
     break;
   }
 }
@@ -35,13 +35,13 @@ void Escribir()
   byte block;
   MFRC522::StatusCode status;
   byte len;
-  Serial.write('1');
+  Serial.println("1");
   Serial.setTimeout(20000L) ;     // wait until 20 seconds for input from serial
   // Ask personal data: Family name
   len = Serial.readBytesUntil('#', (char *) buffer, 30) ; // read family name from serial
   for (byte i = len; i < 30; i++) buffer[i] = ' ';     // pad with spaces
   for (byte i = 0; i < 6; i++) key.keyByte[i] = 0xFF;
-  Serial.write('1');
+  Serial.println("1");
   // Look for new cards
   while ( ! mfrc522.PICC_IsNewCardPresent()) {
     //return;
@@ -69,7 +69,7 @@ void Escribir()
   if (status != MFRC522::STATUS_OK) {
     return;
   }
-  Serial.write('1');
+  Serial.println("1");
   mfrc522.PICC_HaltA(); // Halt PICC
   mfrc522.PCD_StopCrypto1();  // Stop encryption on PCD
 }
@@ -113,11 +113,12 @@ void Leer()
   if (status != MFRC522::STATUS_OK) {
     return;
   }
-
+  String data="";
   //PRINT LAST NAME
   for (uint8_t i = 0; i < 16; i++) {
-    Serial.write(buffer2[i] );
+    data+=(char)buffer2[i];
   }
+  Serial.println(data);
 
   delay(1000); //change value if you want to read cards faster
 
